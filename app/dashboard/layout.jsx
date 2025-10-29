@@ -1,6 +1,7 @@
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function DashboardLayout({ children }) {
   return (
@@ -14,6 +15,7 @@ export default function DashboardLayout({ children }) {
           </div>
         </div>
       </SidebarInset>
+      <Toaster />
     </SidebarProvider>
   );
 }
