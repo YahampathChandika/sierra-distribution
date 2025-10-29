@@ -1,15 +1,33 @@
-export default function SettingsPage() {
+import { Suspense } from "react";
+import { createClient } from "@/lib/supabase/server";
+import { getPayments, getPaymentStats } from "@/lib/queries/payments";
+import { PaymentsContent } from "@/components/payments/payments-content";
+import { PaymentsSkeleton } from "@/components/payments/payments-skeleton";
+
+export default async function PaymentsPage({ searchParams }) {
+  const supabase = await createClient();
+
+  // Get filters from search params
+  const filters = {
+    search: searchParams?.search || "",
+    paymentType:
+      searchParams?.type && searchParams.type !== "all"
+        ? searchParams.type
+        : undefined,
+    paymentMethod:
+      searchParams?.method && searchParams.method !== "all"
+        ? searchParams.method
+        : undefined,
+  };
+
+  const [payments, stats] = await Promise.all([
+    getPayments(supabase, filters),
+    getPaymentStats(supabase, {}),
+  ]);
+
   return (
-    <div className="space-y-4">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
-        <p className="text-muted-foreground">
-          Configure system settings and preferences.
-        </p>
-      </div>
-      <div className="rounded-lg border bg-card p-8 text-center">
-        <p className="text-muted-foreground">Settings page coming soon...</p>
-      </div>
-    </div>
+    <Suspense fallback={<PaymentsSkeleton />}>
+      <PaymentsContent payments={payments} stats={stats} />
+    </Suspense>
   );
 }
