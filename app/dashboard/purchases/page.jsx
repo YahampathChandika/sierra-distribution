@@ -1,15 +1,39 @@
-export default function SettingsPage() {
+import { Suspense } from "react";
+import { createClient } from "@/lib/supabase/server";
+import { getPurchases, getPurchaseStats } from "@/lib/queries/purchases";
+import { getActiveSuppliers } from "@/lib/queries/suppliers";
+import { PurchasesContent } from "@/components/purchases/purchases-content";
+import { PurchasesSkeleton } from "@/components/purchases/purchases-skeleton";
+
+export default async function PurchasesPage({ searchParams }) {
+  const supabase = await createClient();
+
+  // Get filters from search params
+  const filters = {
+    search: searchParams?.search || "",
+    supplierId:
+      searchParams?.supplier && searchParams.supplier !== "all"
+        ? searchParams.supplier
+        : undefined,
+    paymentStatus:
+      searchParams?.status && searchParams.status !== "all"
+        ? searchParams.status
+        : undefined,
+  };
+
+  const [purchases, suppliers, stats] = await Promise.all([
+    getPurchases(supabase, filters),
+    getActiveSuppliers(supabase),
+    getPurchaseStats(supabase, {}),
+  ]);
+
   return (
-    <div className="space-y-4">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
-        <p className="text-muted-foreground">
-          Configure system settings and preferences.
-        </p>
-      </div>
-      <div className="rounded-lg border bg-card p-8 text-center">
-        <p className="text-muted-foreground">Settings page coming soon...</p>
-      </div>
-    </div>
+    <Suspense fallback={<PurchasesSkeleton />}>
+      <PurchasesContent
+        purchases={purchases}
+        suppliers={suppliers}
+        stats={stats}
+      />
+    </Suspense>
   );
 }
