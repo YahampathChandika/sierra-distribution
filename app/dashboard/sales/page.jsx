@@ -1,15 +1,35 @@
-export default function SettingsPage() {
+import { Suspense } from "react";
+import { createClient } from "@/lib/supabase/server";
+import { getSales, getSalesStats } from "@/lib/queries/sales";
+import { getActiveCustomers } from "@/lib/queries/customers";
+import { SalesContent } from "@/components/sales/sales-content";
+import { SalesSkeleton } from "@/components/sales/sales-skeleton";
+
+export default async function SalesPage({ searchParams }) {
+  const supabase = await createClient();
+
+  // Get filters from search params
+  const filters = {
+    search: searchParams?.search || "",
+    customerId:
+      searchParams?.customer && searchParams.customer !== "all"
+        ? searchParams.customer
+        : undefined,
+    paymentStatus:
+      searchParams?.status && searchParams.status !== "all"
+        ? searchParams.status
+        : undefined,
+  };
+
+  const [sales, customers, stats] = await Promise.all([
+    getSales(supabase, filters),
+    getActiveCustomers(supabase),
+    getSalesStats(supabase, {}),
+  ]);
+
   return (
-    <div className="space-y-4">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
-        <p className="text-muted-foreground">
-          Configure system settings and preferences.
-        </p>
-      </div>
-      <div className="rounded-lg border bg-card p-8 text-center">
-        <p className="text-muted-foreground">Settings page coming soon...</p>
-      </div>
-    </div>
+    <Suspense fallback={<SalesSkeleton />}>
+      <SalesContent sales={sales} customers={customers} stats={stats} />
+    </Suspense>
   );
 }
