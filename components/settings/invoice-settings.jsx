@@ -14,7 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { FileText } from "lucide-react";
 
 export function InvoiceSettings({ initialSettings }) {
@@ -25,7 +25,6 @@ export function InvoiceSettings({ initialSettings }) {
     payment_prefix: initialSettings.payment_prefix || "PAY",
   });
   const router = useRouter();
-  const { toast } = useToast();
   const supabase = createClient();
 
   const handleSubmit = async (e) => {

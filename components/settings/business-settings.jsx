@@ -15,7 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Building2 } from "lucide-react";
 
 export function BusinessSettings({ initialSettings }) {
@@ -28,7 +28,6 @@ export function BusinessSettings({ initialSettings }) {
     tax_number: initialSettings.tax_number || "",
   });
   const router = useRouter();
-  const { toast } = useToast();
   const supabase = createClient();
 
   const handleSubmit = async (e) => {

@@ -12,13 +12,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { PaymentForm } from "./payment-form";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function PaymentDialog({ payment, open, onOpenChange }) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { toast } = useToast();
   const supabase = createClient();
 
   const handleSubmit = async (data) => {

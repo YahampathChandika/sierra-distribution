@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { User, Key } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -23,7 +23,6 @@ export function ProfileSettings({ user, profile }) {
     newPassword: "",
     confirmPassword: "",
   });
-  const { toast } = useToast();
   const supabase = createClient();
 
   const handlePasswordChange = async (e) => {

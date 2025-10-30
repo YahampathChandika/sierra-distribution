@@ -14,12 +14,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 export function DeleteSaleDialog({ sale, open, onOpenChange }) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { toast } = useToast();
   const supabase = createClient();
 
   const handleDelete = async () => {

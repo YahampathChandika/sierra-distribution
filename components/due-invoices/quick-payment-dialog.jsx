@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 export function QuickPaymentDialog({ invoice, open, onOpenChange }) {
   const [amount, setAmount] = useState(
@@ -30,7 +30,6 @@ export function QuickPaymentDialog({ invoice, open, onOpenChange }) {
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { toast } = useToast();
   const supabase = createClient();
 
   const handleSubmit = async (e) => {

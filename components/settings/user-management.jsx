@@ -30,7 +30,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Users, Plus } from "lucide-react";
 import {
   Dialog,
@@ -49,7 +49,6 @@ export function UserManagement({ users }) {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("staff");
   const router = useRouter();
-  const { toast } = useToast();
   const supabase = createClient();
 
   const handleSubmit = async (e) => {

@@ -12,12 +12,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { CustomerForm } from "./customer-form";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 export function CustomerDialog({ customer, open, onOpenChange }) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { toast } = useToast();
   const supabase = createClient();
 
   const handleSubmit = async (data) => {
